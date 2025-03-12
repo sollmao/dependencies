@@ -1,4 +1,4 @@
-function(Iris, States, curseMarketStock)
+return function(Iris, States, curseMarketStock)
     for i, v in ipairs(curseMarketStock) do
         local item = v.give
         if States.Dont_Trade.value[item] == nil then
