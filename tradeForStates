@@ -1,5 +1,4 @@
-return 
-    function(Iris, States, curseMarketStock)
+return function(Iris, States, curseMarketStock, tradeForCache)
         for i, v in ipairs(curseMarketStock) do
             local item = v.receive
             local give = v.give
@@ -59,4 +58,3 @@ return
             end
         end
     end
-end
