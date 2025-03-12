@@ -1,59 +1,61 @@
-return function(Iris, States, curseMarketStock)
-    for i, v in ipairs(curseMarketStock) do
-        local item = v.receive
-        local give = v.give
-
-        if States.Trade_For.value[item] == nil then
-            States.Trade_For.value[item] = {
-                enabled = false,
-                ["give"] = give,
-                receive = item
-            }
-        end
-
-        States.Trade_For.value[item].index = i
-
-        if tradeForCache[item] == nil then
-            tradeForCache[item] = Iris.State(States.Trade_For.value[item].enabled)
-        end
-
-        local selectable = Iris.Checkbox({"[" .. i .. "]" .. item}, { isChecked = tradeForCache[item] })
-        if selectable.checked() then
-            States.Trade_For.value[item].enabled = true
-            if tradeForCache[item] ~= nil then
-                tradeForCache[item]:set(true)
+return 
+    function(Iris, States, curseMarketStock)
+        for i, v in ipairs(curseMarketStock) do
+            local item = v.receive
+            local give = v.give
+    
+            if States.Trade_For.value[item] == nil then
+                States.Trade_For.value[item] = {
+                    enabled = false,
+                    ["give"] = give,
+                    receive = item
+                }
+            end
+    
+            States.Trade_For.value[item].index = i
+    
+            if tradeForCache[item] == nil then
+                tradeForCache[item] = Iris.State(States.Trade_For.value[item].enabled)
+            end
+    
+            local selectable = Iris.Checkbox({"[" .. i .. "]" .. item}, { isChecked = tradeForCache[item] })
+            if selectable.checked() then
+                States.Trade_For.value[item].enabled = true
+                if tradeForCache[item] ~= nil then
+                    tradeForCache[item]:set(true)
+                end
+            end
+    
+            if selectable.unchecked() then
+                States.Trade_For.value[item].enabled = false
+                if tradeForCache[item] ~= nil then
+                    tradeForCache[item]:set(false)
+                end
             end
         end
-
-        if selectable.unchecked() then
-            States.Trade_For.value[item].enabled = false
-            if tradeForCache[item] ~= nil then
-                tradeForCache[item]:set(false)
+    
+        for i, v in States.Trade_For.value do
+            local index = v.index
+            local item = v.receive
+            if v.enabled == false or curseMarketStock[index] ~= nil or curseMarketStock[index].receive == item then
+                continue
             end
-        end
-    end
-
-    for i, v in States.Trade_For.value do
-        local index = v.index
-        local item = v.receive
-        if v.enabled == false or curseMarketStock[index] ~= nil or curseMarketStock[index].receive == item then
-            continue
-        end
-
-        v.index = nil
-
-        local selectable = Iris.Checkbox({item}, { isChecked = v.enabled or false })
-        if selectable.checked() then
-            v.enabled = true
-            if tradeForCache[item] ~= nil then
-                tradeForCache[item]:set(true)
+    
+            v.index = nil
+    
+            local selectable = Iris.Checkbox({item}, { isChecked = v.enabled or false })
+            if selectable.checked() then
+                v.enabled = true
+                if tradeForCache[item] ~= nil then
+                    tradeForCache[item]:set(true)
+                end
             end
-        end
-
-        if selectable.unchecked() then
-            v.enabled = false
-            if tradeForCache[item] ~= nil then
-                tradeForCache[item]:set(false)
+    
+            if selectable.unchecked() then
+                v.enabled = false
+                if tradeForCache[item] ~= nil then
+                    tradeForCache[item]:set(false)
+                end
             end
         end
     end
