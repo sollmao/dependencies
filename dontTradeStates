@@ -55,3 +55,4 @@ return function(Iris, States, curseMarketStock)
             end
         end
     end
+end
